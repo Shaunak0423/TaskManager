@@ -30,15 +30,19 @@ export default function TaskListScreen() {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <View style={[styles.task, item.completed && styles.completed]}>
-              <TouchableOpacity onPress={() => toggleTask(item.id)}>
+              <TouchableOpacity onPress={() => toggleTask(item.id)} style={{ flex: 1 }}>
                 <Text style={styles.taskTitle}>{item.title}</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => deleteTask(item.id)}>
-                <Text style={styles.delete}>🗑</Text>
-              </TouchableOpacity>
-              <TouchableOpacity  onPress={() =>router.push({pathname: "/task-detail",params: { task: JSON.stringify(item) },})}>
-                <Text styles={styles.taskdetails}>↗️</Text>
-              </TouchableOpacity>
+
+              <View style={styles.actions}>
+                <TouchableOpacity onPress={() => router.push({ pathname: "/edit-task", params: { id: item.id, title: item.title } })}>
+                  <Text style={styles.edit}>✏️</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => deleteTask(item.id)}>
+                  <Text style={styles.delete}>🗑</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
         />
@@ -68,7 +72,9 @@ const styles = StyleSheet.create({
   },
   completed: { backgroundColor: "#dfe6e9" },
   taskTitle: { fontSize: 16, color: "#2d3436" },
-  delete: { fontSize: 18, color: "red" },
+  delete: { fontSize: 18, color: "red", marginLeft: 10 },
+  edit: { fontSize: 18, color: "#0984e3", marginRight: 10 },
+  actions: { flexDirection: "row", alignItems: "center" },
   addButton: {
     position: "absolute",
     bottom: 30,
@@ -78,5 +84,4 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   addButtonText: { color: "#fff", fontSize: 24, fontWeight: "700" },
-  taskdetails: {backgroundColor:'#e3cdcdff', padding: 10, borderRadius:10}
 });
